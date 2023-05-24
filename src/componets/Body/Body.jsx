@@ -7,13 +7,14 @@ const Body = () => {
   const [data, setData] = useState([]);
   const [timeCount, setTimeCount] = useState(0);
   const [titleData, seTitleData] = useState([]);
+
   useEffect(() => {
     fetch("data.json")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
         const localData = JSON.parse(localStorage.getItem("marked-title"));
-        console.log(localData);
+        // console.log(localData);
         if (localData) {
           seTitleData(localData);
         }
@@ -21,9 +22,9 @@ const Body = () => {
   }, []);
 
   const handleTitle = (postData) => {
-    console.log("postData :>> ", postData);
     const newPostData = [postData];
     const addPostData = [...titleData, ...newPostData];
+
     localStorage.setItem("marked-title", JSON.stringify(addPostData));
     seTitleData(addPostData);
     const isTitle = titleData.find((t) => t.id === postData.id);
