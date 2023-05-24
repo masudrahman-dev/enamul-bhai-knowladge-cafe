@@ -5,21 +5,28 @@ import { toast } from "react-hot-toast";
 
 const Body = () => {
   const [data, setData] = useState([]);
+  const [timeCount, setTimeCount] = useState(0);
+  const [titleData, seTitleData] = useState([]);
   useEffect(() => {
     fetch("data.json")
       .then((res) => res.json())
-      .then((data) => setData(data));
+      .then((data) => {
+        setData(data);
+        const localData = JSON.parse(localStorage.getItem("marked-title"));
+        console.log(localData);
+        if (localData) {
+          seTitleData(localData);
+        }
+      });
   }, []);
 
-  const [timeCount, setTimeCount] = useState(0);
-  const [titleData, seTitleData] = useState([]);
   const handleTitle = (postData) => {
-    // console.log("postData :>> ", postData);
+    console.log("postData :>> ", postData);
     const newPostData = [postData];
     const addPostData = [...titleData, ...newPostData];
+    localStorage.setItem("marked-title", JSON.stringify(addPostData));
     seTitleData(addPostData);
     const isTitle = titleData.find((t) => t.id === postData.id);
-    console.log("isTitle :>> ", isTitle);
     if (isTitle) {
       toast("Here is your toast.");
     }
